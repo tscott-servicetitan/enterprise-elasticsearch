@@ -1,0 +1,11 @@
+managedNamespaces:
+  - development
+  - elastic-system
+
+tracing:
+  # enabled specifies whether APM tracing is enabled for the operator.
+  enabled: false
+  # config is a map of APM Server configuration variables that should be set in the environment.
+  config:
+    ELASTIC_APM_SERVER_URL: https://apm-server-apm-http.development.svc:8200
+    ELASTIC_APM_SERVER_TIMEOUT: 30s

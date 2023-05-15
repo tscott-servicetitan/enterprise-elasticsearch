@@ -1,0 +1,64 @@
+context: elastic-services
+
+namespaces:
+  development:
+    protected: false
+  elastic-system:
+    protected: false
+
+helmRepos:
+  elastic: https://helm.elastic.co
+  prometheus-community: https://prometheus-community.github.io/helm-charts
+
+appsTemplates:
+  defaults: &defaults
+    group: development
+    enabled: true
+    wait: true
+    helmFlags:
+      - --atomic
+      - --cleanup-on-fail
+  base: &base
+    namespace: development
+    <<: *defaults
+  system_base: &system_base
+    <<: *defaults
+    namespace: elastic-system
+
+apps:
+  kube-metrics:
+    <<: *base
+    chart: prometheus-community/kube-state-metrics
+    version: 4.25.0
+
+  elastic-operator:
+    <<: *system_base
+    chart: elastic/eck-operator
+    version: 2.5.0
+    priority: -10
+    valuesFiles:
+      - values/eck-operator.yaml
+
+  elastic-stack:
+    <<: *base
+    chart: elastic/eck-stack
+    version: 0.2.0
+    priority: -5
+    valuesFiles:
+      - values/eck-stack.yaml
+
+  elastic-apm-server:
+    <<: *base
+    chart: ../helm/eck-apm-server
+    version: 0.1.0
+    priority: -5
+    valuesFiles:
+      - values/apm-server.yaml
+
+  # elastic-agent:
+  #   <<: *base
+  #   chart: elastic/eck-agent
+  #   version: 0.1.0
+  #   valuesFiles:
+  #     - values/eck-agent.yaml
+# kube-metrics-kube-state-metrics.development.svc:8080

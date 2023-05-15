@@ -1,0 +1,15 @@
+---
+apiVersion: apm.k8s.elastic.co/v1
+kind: ApmServer
+metadata:
+  name: {{ include "apmserver.fullname" . }}
+  labels:
+    {{- include "apmserver.labels" . | nindent 4 }}
+  annotations:
+    eck.k8s.elastic.co/license: enterprise
+    {{- if .Values.annotations }}
+    {{- toYaml .Values.annotations | nindent 4 }}
+    {{- end }}
+spec:
+  version: {{ required "An ApmServer version is required" .Values.version }}
+  {{- toYaml .Values.spec | nindent 2 }}

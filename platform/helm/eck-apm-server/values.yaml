@@ -1,0 +1,10 @@
+version: 8.5.3
+labels: {}
+annotations: {}
+
+spec:
+  count: 1
+  elasticsearchRef:
+    name: elasticsearch
+  kibanaRef:
+    name: kibana

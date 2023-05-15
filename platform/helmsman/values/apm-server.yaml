@@ -1,0 +1,8 @@
+version: 8.5.3
+fullnameOverride: apm-server
+spec:
+  count: 1
+  elasticsearchRef:
+    name: elasticsearch
+  kibanaRef:
+    name: kibana
